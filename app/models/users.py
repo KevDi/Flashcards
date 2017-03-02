@@ -13,6 +13,7 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(64), unique=True, index=True)
     password_hash = db.Column(db.String(128))
     confirmed = db.Column(db.Boolean, default=False)
+    collections = db.relationship('FlashcardCollection', backref='user', lazy='dynamic')
 
     @property
     def password(self):
@@ -40,3 +41,6 @@ class User(UserMixin, db.Model):
         self.confirmed = True
         db.session.add(self)
         return True
+
+    def __repr__(self):
+        return '<User %r>' % self.username
