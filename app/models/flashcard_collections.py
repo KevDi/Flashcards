@@ -8,6 +8,7 @@ class FlashcardCollection(db.Model):
     name = db.Column(db.String(64), index=True)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    flashcards = db.relationship('Flashcard', backref='collection', lazy='dynamic')
 
     def __repr__(self):
         return '<Flashcard Collection: %r>' % self.name
