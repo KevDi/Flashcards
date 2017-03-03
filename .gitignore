@@ -147,6 +147,8 @@ ENV/
 *.iml
 out
 gen
+*.sqlite
+migrations/*
 Würde .gitignore löschen
 Würde .idea/vcs.xml löschen
 Würde .idea/workspace.xml löschen
