@@ -12,6 +12,8 @@ class Config:
     MAIL_USE_TLS = True
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
+    FLASHCARD_MAIL_SUBJECT_PREFIX = '[Flashcard]'
+    FLASHCARD_MAIL_SENDER = 'Flashcard Admin <flashcard@mjkd.de>'
 
     @staticmethod
     def init_app(app):
