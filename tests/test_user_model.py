@@ -61,3 +61,67 @@ class UserModelTestCase(unittest.TestCase):
         time.sleep(2)
         self.assertFalse(u.confirm(token))
 
+    def test_valid_reset_token(self):
+        u = User(password='cat')
+        db.session.add(u)
+        db.session.commit()
+        token = u.generate_reset_token()
+        self.assertTrue(u.reset_password(token, 'dog'))
+        self.assertTrue(u.verify_password('dog'))
+
+    def test_invalid_reset_token(self):
+        u1 = User(password='cat')
+        u2 = User(password='dog')
+        db.session.add(u1)
+        db.session.add(u2)
+        db.session.commit()
+        token = u1.generate_reset_token()
+        self.assertFalse(u2.reset_password(token, 'horse'))
+        self.assertTrue(u2.verify_password('dog'))
+
+    def test_valid_email_change_token(self):
+        u = User(email='john@example.com', password='cat')
+        db.session.add(u)
+        db.session.commit()
+        token = u.generate_email_change_token('susan@example.org')
+        self.assertTrue(u.change_email(token))
+        self.assertTrue(u.email == 'susan@example.org')
+
+    def test_invalid_email_cahnge_token(self):
+        u1 = User(email='john@example.com', password='cat')
+        u2 = User(email='susan@example.org', password='dog')
+        db.session.add(u1)
+        db.session.add(u2)
+        db.session.commit()
+        token = u1.generate_email_change_token('david@example.net')
+        self.assertFalse(u2.change_email(token))
+        self.assertTrue(u2.email == 'susan@example.org')
+
+    def test_duplicate_email_change_token(self):
+        u1 = User(email='john@example.com', password='cat')
+        u2 = User(email='susan@example.org', password='dog')
+        db.session.add(u1)
+        db.session.add(u2)
+        db.session.commit()
+        token = u2.generate_email_change_token('john@example.com')
+        self.assertFalse(u2.change_email(token))
+        self.assertTrue(u2.email == 'susan@example.org')
+
+    def test_gravatar(self):
+        u = User(email='john@example.com', password='cat')
+        with self.app.test_request_context('/'):
+            gravatar = u.gravatar()
+            gravatar_256 = u.gravatar(size=256)
+            gravatar_pg = u.gravatar(rating='pg')
+            gravatar_retro = u.gravatar(default='retro')
+        with self.app.test_request_context('/', base_url='https://example.com'):
+            gravatar_ssl = u.gravatar()
+        self.assertTrue('http://www.gravatar.com/avatar/' +
+                        'd4c74594d841139328695756648b6bd6' in gravatar)
+        self.assertTrue('s=256' in gravatar_256)
+        self.assertTrue('r=pg' in gravatar_pg)
+        self.assertTrue('d=retro' in gravatar_retro)
+        self.assertTrue('https://secure.gravatar.com/avatar/' +
+                        'd4c74594d841139328695756648b6bd6' in gravatar_ssl)
+
+

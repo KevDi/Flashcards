@@ -1,6 +1,6 @@
 import hashlib
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask import current_app
+from flask import current_app, request
 from flask_login import UserMixin
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from .. import db, login_manager
@@ -13,6 +13,7 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(64), unique=True, index=True)
     password_hash = db.Column(db.String(128))
     confirmed = db.Column(db.Boolean, default=False)
+    avatar_hash = db.Column(db.String(32))
     collections = db.relationship('FlashcardCollection', backref='user', lazy='dynamic')
 
     @property
@@ -62,11 +63,10 @@ class User(UserMixin, db.Model):
         s = Serializer(current_app.config['SECRET_KEY'], expiration)
         return s.dumps({'change_email': self.id, 'new_email': new_email})
 
-
     def change_email(self, token):
         s = Serializer(current_app.config['SECRET_KEY'])
         try:
-            data = s.load(token)
+            data = s.loads(token)
         except:
             return False
         if data.get('change_email') != self.id:
@@ -74,11 +74,23 @@ class User(UserMixin, db.Model):
         new_email = data.get('new_email')
         if new_email is None:
             return False
-        if self.query.filter_by(email=new_email).first is not None:
+        if self.query.filter_by(email=new_email).first() is not None:
             return False
         self.email = new_email
+        self.avatar_hash = hashlib.md5(
+            self.email.encode('utf-8')).hexdigest()
         db.session.add(self)
         return True
+
+    def gravatar(self, size=100, default='identicon', rating='g'):
+        if request.is_secure:
+            url = 'https://secure.gravatar.com/avatar'
+        else:
+            url = 'http://www.gravatar.com/avatar'
+        hash = self.avatar_hash or hashlib.md5(
+            self.email.encode('utf-8')).hexdigest()
+        return '{url}/{hash}?s={size}&d={default}&r={rating}'.format(
+            url=url, hash=hash, size=size, default=default, rating=rating)
 
     def __repr__(self):
         return '<User %r>' % self.username
