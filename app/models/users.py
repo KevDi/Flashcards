@@ -1,5 +1,6 @@
 import hashlib
 from werkzeug.security import generate_password_hash, check_password_hash
+from datetime import datetime
 from flask import current_app, request
 from flask_login import UserMixin
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
@@ -14,6 +15,7 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(128))
     confirmed = db.Column(db.Boolean, default=False)
     avatar_hash = db.Column(db.String(32))
+    member_since = db.Column(db.DateTime, default=datetime.utcnow)
     collections = db.relationship('FlashcardCollection', backref='user', lazy='dynamic')
 
     @property

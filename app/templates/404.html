@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}Flashcard - Page Not Found{% endblock %}
+
+{% block page_content %}
+    <div class="col-md-4">
+        <img src="{{ url_for('static', filename='deadlink.png') }}" alt="">
+        <p>Return to <a href="{{ url_for('main.index') }}">Main page</a></p>
+    </div>
+
+{% endblock %}
