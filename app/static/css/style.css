@@ -1,0 +1,19 @@
+.profile-thumbnail {
+    position: absolute;
+}
+
+.profile-header {
+    min-height: 260px;
+    margin-left: 280px;
+}
+
+.demo {
+    margin: 0 0 2em 0;
+    padding: 1.5em;
+    max-width: 100%;
+    box-shadow: 0 2px 2px #aaa;
+    display: flex;
+    flex-direction: column;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+}
