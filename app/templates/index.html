@@ -6,47 +6,5 @@
     <div class="page-header">
         <h1>Hello, {% if current_user.is_authenticated %}{{ current_user.username }}{% else %}Stranger{% endif %}</h1>
     </div>
-
-    <div class="row">
-        <div class="col-md-4">
-            <article class="demo">
-                <header>
-                    <h2>Title</h2>
-                </header>
-                <div>
-                    <p>Dies ist ein Beispiel Satz</p>
-                </div>
-            </article>
-        </div>
-        <div class="col-md-4">
-            <article class="demo">
-                <header>
-                    <h2>Title</h2>
-                </header>
-                <div>
-                    <p>Dies ist ein Beispiel Satz</p>
-                </div>
-            </article>
-        </div>
-        <div class="col-md-4">
-            <article class="demo">
-                <header>
-                    <h2>Title</h2>
-                </header>
-                <div>
-                    <p>Dies ist ein Beispiel Satz</p>
-                </div>
-            </article>
-        </div>
-        <div class="col-md-4">
-            <article class="demo">
-                <header>
-                    <h2>Title</h2>
-                </header>
-                <div>
-                    <p>Dies ist ein Beispiel Satz</p>
-                </div>
-            </article>
-        </div>
-    </div>
+    {% include '_flashcardcollections.html' %}
 {% endblock %}

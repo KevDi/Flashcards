@@ -10,7 +10,11 @@ from .forms import FlashcardCollectionForm
 
 @main.route('/')
 def index():
-    return render_template('index.html')
+    if current_user.is_authenticated:
+        collections = current_user.collections.order_by(FlashcardCollection.timestamp.desc()).all()
+    else:
+        collections = []
+    return render_template('index.html', collections=collections)
 
 
 @main.route('/user/<username>')
@@ -19,7 +23,8 @@ def user(username):
     user = User.query.filter_by(username=username).first()
     if user is None:
         abort(404)
-    return render_template('user.html', user=user)
+    collections = current_user.collections.order_by(FlashcardCollection.timestamp.desc()).all()
+    return render_template('user.html', user=user, collections=collections)
 
 
 @main.route('/add-collection', methods=['GET', 'POST'])
