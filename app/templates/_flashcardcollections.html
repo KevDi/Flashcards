@@ -5,7 +5,7 @@
             <div class="col-xs-12 col-sm-4 col-lg-3">
                 <article class="thumbnail">
                     <header>
-                        <h3>{{ collection.name }}</h3>
+                        <h3><a href="{{ url_for('.flashcardcollection', id=collection.id) }}">{{ collection.name }}</a></h3>
                         <div class="category">
                             {% for category in collection.categories %}
                                 <span class="label label-primary">{{ category.name }}</span>

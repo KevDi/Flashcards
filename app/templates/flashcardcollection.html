@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Flashcards - {{ flashcardcollection.name }}{% endblock %}
+
+{% block page_content %}
+    <div class="page-header">
+        <h1> {{ flashcardcollection.name }} </h1>
+        {% for category in flashcardcollection.categories %}
+            <span class="label label-primary">{{ category.name }}</span>
+        {% endfor %}
+        <p class="flashcardAmount">{{ flashcardcollection.flashcards.count() }} Flashcards in this Collection.</p>
+    </div>
+    {% include "_flashcard.html" %}
+{% endblock %}

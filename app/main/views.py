@@ -51,3 +51,16 @@ def get_category():
     return jsonify({
         'category': [category.name for category in Category.query.order_by(Category.name).all()]
     })
+
+
+@main.route('/flashcardcollection/<int:id>')
+@login_required
+def flashcardcollection(id):
+    flashcardcollection = FlashcardCollection.query.get_or_404(id)
+    return render_template('flashcardcollection.html', flashcardcollection=flashcardcollection)
+
+
+@main.route('/add-flashcard')
+@login_required
+def add_flashcard():
+    return "<h1>Haahaa</h1>"
