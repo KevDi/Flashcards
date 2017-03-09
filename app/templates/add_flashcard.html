@@ -9,3 +9,8 @@
     </div>
     <div class="col-md-4">{{ wtf.quick_form(form) }}</div>
 {% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    {{ pagedown.include_pagedown() }}
+{% endblock %}

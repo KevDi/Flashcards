@@ -76,3 +76,13 @@ def add_flashcard(id):
         else:
             return redirect(url_for('.flashcardcollection', id=flashcardcollection.id))
     return render_template('add_flashcard.html', form=form, name=flashcardcollection.name)
+
+
+@main.route('/flashcardcollection/<int:collId>/flashcard/<int:cardId>')
+@login_required
+def flashcard(collId, cardId):
+    flashcardcollection = FlashcardCollection.query.get_or_404(collId)
+    flashcard = flashcardcollection.flashcards.filter_by(id=cardId).first()
+    if flashcard is None:
+        abort(404)
+    return render_template('flashcard.html', flashcardcollection=flashcardcollection, flashcard=flashcard)

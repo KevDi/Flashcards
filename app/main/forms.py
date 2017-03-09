@@ -16,3 +16,8 @@ class FlashcardForm(FlaskForm):
     next = BooleanField('Next Flashcard?')
     submit = SubmitField('Add')
 
+
+class EditFlashcardForm(FlaskForm):
+    question = PageDownField('Question', validators=[DataRequired()])
+    answer = PageDownField('Answer', validators=[DataRequired()])
+    submit = SubmitField('Add')
