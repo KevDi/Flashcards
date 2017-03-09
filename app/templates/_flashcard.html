@@ -11,7 +11,7 @@
         {% endfor %}
         <div class="col-xs-12 col-sm-4 col-lg-3">
             <article class="thumbnail">
-                <a href="{{ url_for('.add_flashcard') }}" class="newCollection">
+                <a href="{{ url_for('.add_flashcard', id=flashcardcollection.id) }}" class="newCollection">
                     <span class="glyphicon glyphicon-plus"></span>
                 </a>
             </article>

@@ -4,7 +4,6 @@ from app.models.users import User
 from app.models.flashcard_collections import FlashcardCollection
 from app.models.category import Category
 from app.models.flashcard import Flashcard
-from app.models.hascategory import has_category
 from flask_script import Manager, Shell
 from flask_migrate import Migrate, MigrateCommand
 

@@ -3,9 +3,10 @@ from flask_login import login_required, current_user
 from ..models.users import User
 from ..models.category import Category
 from ..models.flashcard_collections import FlashcardCollection
+from ..models.flashcard import Flashcard
 from . import main
 from .. import db
-from .forms import FlashcardCollectionForm
+from .forms import FlashcardCollectionForm, FlashcardForm
 
 
 @main.route('/')
@@ -60,7 +61,18 @@ def flashcardcollection(id):
     return render_template('flashcardcollection.html', flashcardcollection=flashcardcollection)
 
 
-@main.route('/add-flashcard')
+@main.route('/flashcardcollection/<int:id>/add-flashcard', methods=['GET', 'POST'])
 @login_required
-def add_flashcard():
-    return "<h1>Haahaa</h1>"
+def add_flashcard(id):
+    form = FlashcardForm()
+    flashcardcollection = FlashcardCollection.query.get_or_404(id)
+    if form.validate_on_submit():
+        card = Flashcard(question=form.question.data, answer=form.answer.data)
+        flashcardcollection.flashcards.append(card)
+        db.session.add(flashcardcollection)
+        db.session.commit()
+        if form.next.data:
+            return redirect(url_for('.add_flashcard', id=flashcardcollection.id))
+        else:
+            return redirect(url_for('.flashcardcollection', id=flashcardcollection.id))
+    return render_template('add_flashcard.html', form=form, name=flashcardcollection.name)
