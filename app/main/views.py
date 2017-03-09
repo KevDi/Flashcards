@@ -6,7 +6,7 @@ from ..models.flashcard_collections import FlashcardCollection
 from ..models.flashcard import Flashcard
 from . import main
 from .. import db
-from .forms import FlashcardCollectionForm, FlashcardForm
+from .forms import FlashcardCollectionForm, FlashcardForm, EditFlashcardForm
 
 
 @main.route('/')
@@ -71,6 +71,7 @@ def add_flashcard(id):
         flashcardcollection.flashcards.append(card)
         db.session.add(flashcardcollection)
         db.session.commit()
+        flash('Flashcard added to the Collection {0}'.format(flashcardcollection.name))
         if form.next.data:
             return redirect(url_for('.add_flashcard', id=flashcardcollection.id))
         else:
@@ -86,3 +87,23 @@ def flashcard(collId, cardId):
     if flashcard is None:
         abort(404)
     return render_template('flashcard.html', flashcardcollection=flashcardcollection, flashcard=flashcard)
+
+
+@main.route('/flashcardcollection/<int:collId>/flashcard/<int:cardId>/edit', methods=['GET', 'POST'])
+@login_required
+def edit_flashcard(collId, cardId):
+    form = EditFlashcardForm()
+    flashcardcollection = FlashcardCollection.query.get_or_404(collId)
+    flashcard = flashcardcollection.flashcards.filter_by(id=cardId).first()
+    if flashcard is None:
+        abort(404)
+    if form.validate_on_submit():
+        flashcard.question = form.question.data
+        flashcard.answer = form.answer.data
+        db.session.add(flashcard)
+        db.session.commit()
+        flash('Flashcard was updated.')
+        return redirect(url_for('.flashcard', collId=collId, cardId=cardId))
+    form.question.data = flashcard.question
+    form.answer.data = flashcard.answer
+    return render_template('edit_flashcard.html', form=form, flashcard=flashcard)
