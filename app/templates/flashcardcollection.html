@@ -10,5 +10,7 @@
         {% endfor %}
         <p class="flashcardAmount">{{ flashcardcollection.flashcards.count() }} Flashcards in this Collection.</p>
     </div>
+    <a href="{{ url_for('.learn', id=flashcardcollection.id) }}"><span class="btn btn-primary btn-learn">Learn</span></a>
     {% include "_flashcard.html" %}
+
 {% endblock %}

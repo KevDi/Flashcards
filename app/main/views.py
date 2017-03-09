@@ -1,5 +1,7 @@
-from flask import render_template, redirect, url_for, abort, flash, jsonify
+from flask import render_template, redirect, url_for, abort, flash, jsonify, request
 from flask_login import login_required, current_user
+from werkzeug.security import check_password_hash
+
 from ..models.users import User
 from ..models.category import Category
 from ..models.flashcard_collections import FlashcardCollection
@@ -7,6 +9,7 @@ from ..models.flashcard import Flashcard
 from . import main
 from .. import db
 from .forms import FlashcardCollectionForm, FlashcardForm, EditFlashcardForm
+from random import choice
 
 
 @main.route('/')
@@ -107,3 +110,11 @@ def edit_flashcard(collId, cardId):
     form.question.data = flashcard.question
     form.answer.data = flashcard.answer
     return render_template('edit_flashcard.html', form=form, flashcard=flashcard)
+
+
+@main.route('/flashcardcollection/<int:id>/learn')
+@login_required
+def learn(id):
+    flashcardcollection = FlashcardCollection.query.get_or_404(id)
+    flashcard = choice(flashcardcollection.flashcards.all())
+    return render_template('learn.html', flashcard=flashcard, name=flashcardcollection.name)

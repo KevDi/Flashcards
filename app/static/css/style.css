@@ -117,3 +117,11 @@ div.flask-pagedown-preview h3 {
     padding: 4px;
 }
 
+.learn {
+    display: none;
+}
+
+.btn-answer, .choiseBtn, .btn-learn{
+    margin-bottom: 15px;
+    margin-top: 15px;
+}

@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Flashcard - Learning Collection {{ name }}{% endblock %}
+
+{% block page_content %}
+    <div class="page-header">
+        <h1> Learning Flashcard x of y in Collection {{ name }} </h1>
+    </div>
+    <div>
+        <h2>Question:</h2>
+        <div class="flashcard-body">
+            {% if flashcard.question_html %}
+                <p>{{ flashcard.question_html | safe }}</p>
+            {% else %}
+                <p>{{ flashcard.question }}</p>
+            {% endif %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+            <span class="btn btn-primary btn-answer" onclick="showAnswer()" id="show_answer">Show Answer</span>
+        </div>
+    </div>
+    <div class="learn" id="answer">
+        <h2>Question:</h2>
+        <div class="flashcard-body">
+            {% if flashcard.answer_html %}
+                <p>{{ flashcard.answer_html | safe }}</p>
+            {% else %}
+                <p>{{ flashcard.answer }}</p>
+            {% endif %}
+        </div>
+        <div class="row choiseBtn">
+            <div class="col-xs-6 col-md-4">
+                <span class="btn btn-danger">Wrong</span>
+            </div>
+            <div class="col-xs-6 col-md-4 col-md-offset-4">
+                <span class="btn btn-success">Right</span>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script src="{{ url_for('static', filename='js/answer.js') }}"></script>
+{% endblock %}
