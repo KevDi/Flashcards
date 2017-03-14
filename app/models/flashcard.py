@@ -10,6 +10,8 @@ class Flashcard(db.Model):
     question_html = db.Column(db.Text)
     answer = db.Column(db.Text)
     answer_html = db.Column(db.Text)
+    right_answered = db.Column(db.Boolean, default=False)
+    wrong_answered = db.Column(db.Boolean, default=False)
     collection_id = db.Column(db.Integer, db.ForeignKey('flashcardcollection.id'))
 
     @staticmethod

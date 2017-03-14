@@ -1,6 +1,5 @@
-from flask import render_template, redirect, url_for, abort, flash, jsonify, request
+from flask import render_template, redirect, url_for, abort, flash, jsonify, make_response, request
 from flask_login import login_required, current_user
-from werkzeug.security import check_password_hash
 
 from ..models.users import User
 from ..models.category import Category
@@ -116,5 +115,42 @@ def edit_flashcard(collId, cardId):
 @login_required
 def learn(id):
     flashcardcollection = FlashcardCollection.query.get_or_404(id)
-    flashcard = choice(flashcardcollection.flashcards.all())
+    only_wrong = bool(request.cookies.get('only_wrong', ''))
+    if only_wrong:
+        flashcards = flashcardcollection.flashcards.filter_by(wrong_answered=True).all()
+    else:
+        flashcards = flashcardcollection.flashcards.all()
+    flashcard = choice(flashcards)
     return render_template('learn.html', flashcard=flashcard, name=flashcardcollection.name)
+
+
+@main.route('/flashcardcollection/<int:id>/learn-all')
+@login_required
+def learn_all(id):
+    resp = make_response(redirect(url_for('.learn', id=id)))
+    resp.set_cookie('only_wrong', '', max_age=30 * 24 * 60 * 60)
+    return resp
+
+
+@main.route('/flashcardcollection/<int:id>/learn-wrong')
+@login_required
+def learn_wrong(id):
+    coll = FlashcardCollection.query.filter_by(id=id).first()
+    resp = make_response(redirect(url_for('.learn', id=id)))
+    if coll is None:
+        resp.set_cookie('only_wrong', '', max_age=30 * 24 * 60 * 60)
+    else:
+        resp.set_cookie('only_wrong', '1', max_age=30 * 24 * 60 * 60)
+    return resp
+
+
+@main.route('/flashcardcollection/<int:id>/reset-cards')
+@login_required
+def reset_cards(id):
+    coll = FlashcardCollection.query.get_or_404(id)
+    for card in coll.flashcards.all():
+        card.wrong_answered = False
+        card.right_answered = False
+    db.session.add(coll)
+    db.session.commit()
+    return redirect(url_for('.flashcardcollection', id=id))

@@ -8,9 +8,22 @@
         {% for category in flashcardcollection.categories %}
             <span class="label label-primary">{{ category.name }}</span>
         {% endfor %}
-        <p class="flashcardAmount">{{ flashcardcollection.flashcards.count() }} Flashcards in this Collection.</p>
+        <br>
+        <div class="flashcardAmount">
+            <p class="label label-default">{{ flashcardcollection.flashcards.filter_by(wrong_answered=False, right_answered=False).count() }} Flashcards in
+                this Collection.</p>
+            <p class="label label-danger">{{ flashcardcollection.flashcards.filter_by(wrong_answered=True).count() }} wrong
+                answered</p>
+            <p class="label label-success">{{ flashcardcollection.flashcards.filter_by(right_answered=True).count() }} right
+                answered</p>
+        </div>
     </div>
-    <a href="{{ url_for('.learn', id=flashcardcollection.id) }}"><span class="btn btn-primary btn-learn">Learn</span></a>
+    <a href="{{ url_for('.learn_all', id=flashcardcollection.id) }}"><span
+            class="btn btn-primary btn-learn">Learn All</span></a>
+    <a href="{{ url_for('.learn_wrong', id=flashcardcollection.id) }}"><span
+            class="btn btn-danger btn-learn">Learn Wrong Ones</span></a>
+    <a href="{{ url_for('.reset_cards', id=flashcardcollection.id) }}"><span
+            class="btn btn-warning btn-learn">Reset Cards</span></a>
     {% include "_flashcard.html" %}
 
 {% endblock %}
