@@ -4,4 +4,4 @@ python:
 # command to install dependencies
 install: "pip install -r requirements/common.txt"
 # command to run tests
-script: manage.py test
+script: python3 manage.py test
