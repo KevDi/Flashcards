@@ -6,6 +6,7 @@
                     <h3>
                         <a href="{{ url_for('.flashcard', collId=flashcardcollection.id, cardId=flashcard.id) }}">Flashcard {{ loop.index }}</a>
                     </h3>
+                    <a href="{{ url_for('.delete_card', collId=flashcardcollection.id, cardId=flashcard.id) }}"><span class="label label-danger">Delete</span></a>
                 </header>
                 <p class="flex-text">{{ flashcard.question[:20] }}...</p>
             </article>

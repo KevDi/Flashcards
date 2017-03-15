@@ -154,3 +154,12 @@ def reset_cards(id):
     db.session.add(coll)
     db.session.commit()
     return redirect(url_for('.flashcardcollection', id=id))
+
+
+@main.route('/flashcardcollection/<int:collId>/delete-flashcard/<int:cardId>')
+@login_required
+def delete_card(collId, cardId):
+    flashcard = Flashcard.query.get_or_404(cardId)
+    db.session.delete(flashcard)
+    db.session.commit()
+    return redirect(url_for('.flashcardcollection', id=collId))
