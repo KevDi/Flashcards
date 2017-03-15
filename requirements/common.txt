@@ -20,7 +20,7 @@ alembic==0.8.10
 bleach==2.0.0
 blinker==1.4
 click==6.7
-html5lib==2.0
+html5lib==1.0b10
 itsdangerous==0.24
 python-editor==1.0.3
 six==1.10.0
