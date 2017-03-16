@@ -115,33 +115,19 @@ def edit_flashcard(collId, cardId):
 @login_required
 def learn(id):
     flashcardcollection = FlashcardCollection.query.get_or_404(id)
-    only_wrong = bool(request.cookies.get('only_wrong', ''))
-    if only_wrong:
-        flashcards = flashcardcollection.flashcards.filter_by(wrong_answered=True).all()
+    mode = request.args.get('mode')
+    if mode == 'normal':
+        flashcards = flashcardcollection.flashcards.filter_by(wrong_answered=False, right_answered=False).all()
+    elif mode == 'wrong_ones':
+        flashcards = flashcardcollection.flashcards.filter_by(wrong_answered=True, right_answered=False).all()
     else:
-        flashcards = flashcardcollection.flashcards.all()
-    flashcard = choice(flashcards)
-    return render_template('learn.html', flashcard=flashcard, name=flashcardcollection.name)
-
-
-@main.route('/flashcardcollection/<int:id>/learn-all')
-@login_required
-def learn_all(id):
-    resp = make_response(redirect(url_for('.learn', id=id)))
-    resp.set_cookie('only_wrong', '', max_age=30 * 24 * 60 * 60)
-    return resp
-
-
-@main.route('/flashcardcollection/<int:id>/learn-wrong')
-@login_required
-def learn_wrong(id):
-    coll = FlashcardCollection.query.filter_by(id=id).first()
-    resp = make_response(redirect(url_for('.learn', id=id)))
-    if coll is None:
-        resp.set_cookie('only_wrong', '', max_age=30 * 24 * 60 * 60)
+        abort(404)
+    if not flashcards:
+        flash('No Cards to learn. Please reset the Cards or learn the Wrong ones if there are any.')
+        return redirect(url_for('.flashcardcollection', id=id))
     else:
-        resp.set_cookie('only_wrong', '1', max_age=30 * 24 * 60 * 60)
-    return resp
+        flashcard = choice(flashcards)
+    return render_template('learn.html', flashcard=flashcard, collection=flashcardcollection)
 
 
 @main.route('/flashcardcollection/<int:id>/reset-cards')
@@ -163,3 +149,25 @@ def delete_card(collId, cardId):
     db.session.delete(flashcard)
     db.session.commit()
     return redirect(url_for('.flashcardcollection', id=collId))
+
+
+@main.route('/flashcardcollection/<int:collId>/learn/<int:cardId>/wrong')
+@login_required
+def wrong_answer(collId, cardId):
+    flashcard = Flashcard.query.get_or_404(cardId)
+    flashcard.wrong_answered = True
+    flashcard.right_answered = False
+    db.session.add(flashcard)
+    db.session.commit()
+    return redirect(url_for('.learn', id=collId, mode=request.args.get('mode')))
+
+
+@main.route('/flashcardcollection/<int:collId>/learn/<int:cardId>/right')
+@login_required
+def right_answer(collId, cardId):
+    flashcard = Flashcard.query.get_or_404(cardId)
+    flashcard.wrong_answered = False
+    flashcard.right_answered = True
+    db.session.add(flashcard)
+    db.session.commit()
+    return redirect(url_for('.learn', id=collId, mode=request.args.get('mode')))

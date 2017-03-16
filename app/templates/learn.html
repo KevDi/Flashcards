@@ -4,7 +4,7 @@
 
 {% block page_content %}
     <div class="page-header">
-        <h1> Learning Flashcard x of y in Collection {{ name }} </h1>
+        <h1> Learning Flashcard x of y in Collection {{ collection.name }} </h1>
     </div>
     <div>
         <h2>Question:</h2>
@@ -32,10 +32,12 @@
         </div>
         <div class="row choiseBtn">
             <div class="col-xs-6 col-md-4">
-                <span class="btn btn-danger">Wrong</span>
+                <a href="{{ url_for('.wrong_answer', collId=collection.id ,cardId=flashcard.id, mode=request.args.get('mode')) }}"> <span
+                        class="btn btn-danger">Wrong</span></a>
             </div>
             <div class="col-xs-6 col-md-4 col-md-offset-4">
-                <span class="btn btn-success">Right</span>
+                <a href="{{ url_for('.right_answer', collId=collection.id ,cardId=flashcard.id, mode=request.args.get('mode')) }}"><span
+                        class="btn btn-success">Right</span></a>
             </div>
         </div>
     </div>

@@ -18,9 +18,9 @@
                 answered</p>
         </div>
     </div>
-    <a href="{{ url_for('.learn_all', id=flashcardcollection.id) }}"><span
+    <a href="{{ url_for('.learn', id=flashcardcollection.id, mode='normal') }}"><span
             class="btn btn-primary btn-learn">Learn All</span></a>
-    <a href="{{ url_for('.learn_wrong', id=flashcardcollection.id) }}"><span
+    <a href="{{ url_for('.learn', id=flashcardcollection.id, mode='wrong_ones') }}"><span
             class="btn btn-danger btn-learn">Learn Wrong Ones</span></a>
     <a href="{{ url_for('.reset_cards', id=flashcardcollection.id) }}"><span
             class="btn btn-warning btn-learn">Reset Cards</span></a>
