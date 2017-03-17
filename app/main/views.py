@@ -1,6 +1,6 @@
-from flask import render_template, redirect, url_for, abort, flash, jsonify, make_response, request
+from flask import render_template, redirect, url_for, abort, flash, jsonify, make_response, request, current_app
 from flask_login import login_required, current_user
-
+from flask_sqlalchemy import get_debug_queries
 from ..models.users import User
 from ..models.category import Category
 from ..models.flashcard_collections import FlashcardCollection
@@ -9,6 +9,16 @@ from . import main
 from .. import db
 from .forms import FlashcardCollectionForm, FlashcardForm, EditFlashcardForm
 from random import choice
+
+
+@main.after_app_request
+def after_request(response):
+    for query in get_debug_queries():
+        if query.duration >= current_app.config['FLASHCARD_SLOW_DB_QUERY_TIME']:
+            current_app.logger.warning(
+                'Slow query: %s\nParameters: %s\nDuration: %fs\nContext: %s\n' %
+                (query.statement, query.parameters, query.duration, query.context))
+    return response
 
 
 @main.route('/')

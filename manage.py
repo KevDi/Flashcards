@@ -29,5 +29,19 @@ def test():
     unittest.TextTestRunner(verbosity=2).run(tests)
 
 
+@manager.command
+def deploy():
+    """Run deployment task"""
+    from flask_migrate import migrate, upgrade, init
+
+    # init database
+    init()
+
+    # create migrations
+    migrate()
+
+    # update Database
+    upgrade()
+
 if __name__ == '__main__':
     manager.run()
