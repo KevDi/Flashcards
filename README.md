@@ -16,29 +16,31 @@ You can
 ## Installation
 1. Install the Requirements
 
-<code>pip3 install -r requriements/common.txt</code>
+```pip3 install -r requriements/common.txt```
 
 2. Setup the Database
 
-<code>python3 manage.py db init</code>
+```
+python3 manage.py db init
 
-<code>python3 manage.py db migrate</code>
+python3 manage.py db migrate
 
-<code>python3 manage.py db upgrade</code>
+python3 manage.py db upgrade
+```
 
 3. Run the Application
 
-<code>python3 manage.py runserver</code>
+```python3 manage.py runserver```
 
 The Application was created and tested with Python Version 3.5
 
 To run the tests execute
 
-<code>python3 manage.py test</code>
+```python3 manage.py test```
 
 To open a shell within the App Context run
 
-<code>python3 manage.py shell</code>
+```python3 manage.py shell```
 
 ## Screenshots of the Application
 
