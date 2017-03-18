@@ -44,3 +44,30 @@ To open a shell within the App Context run
 
 ## Screenshots of the Application
 
+
+Main Screen of the Application
+![markdown-preview GitHub style](https://raw.githubusercontent.com/KevDi/Flashcards/screens/screens/Mainscreen.png)
+
+List of Flashcards
+![markdown-preview GitHub style](https://raw.githubusercontent.com/KevDi/Flashcards/screens/screens/Flashcardcollection.png)
+
+Display of Flashcard without Markdown
+![markdown-preview GitHub style](https://raw.githubusercontent.com/KevDi/Flashcards/screens/screens/flashcard.png)
+
+Display of Flashcard with Markdown in the Answer
+![markdown-preview GitHub style](https://raw.githubusercontent.com/KevDi/Flashcards/screens/screens/Flashcard_Markdown.png)
+
+User Profile
+![markdown-preview GitHub style](https://raw.githubusercontent.com/KevDi/Flashcards/screens/screens/User_profile.png)
+
+Learn Page
+![markdown-preview GitHub style](https://raw.githubusercontent.com/KevDi/Flashcards/screens/screens/Learn.png)
+
+Learn Page with Answer
+![markdown-preview GitHub style](https://raw.githubusercontent.com/KevDi/Flashcards/screens/screens/Learn_with_answer.png)
+
+Creation of a new Flashcardcollection
+![markdown-preview GitHub style](https://raw.githubusercontent.com/KevDi/Flashcards/screens/screens/New_FlashcardCollection.png)
+
+Creation of a new Flashcard
+![markdown-preview GitHub style](https://raw.githubusercontent.com/KevDi/Flashcards/screens/screens/New_Flashcard.png)
