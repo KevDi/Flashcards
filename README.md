@@ -20,11 +20,11 @@ You can
 
 2. Setup the Database
 
-<code>python3 manage.py db init
+<code>python3 manage.py db init</code>
 
-python3 manage.py db migrate
+<code>python3 manage.py db migrate</code>
 
-python3 manage.py db upgrade</code>
+<code>python3 manage.py db upgrade</code>
 
 3. Run the Application
 
