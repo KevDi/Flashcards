@@ -41,3 +41,22 @@ class FlashcardCollectionTestCase(unittest.TestCase):
         db.session.commit()
         self.assertTrue(f.flashcards.filter_by(wrong_answered=False).count() == 10)
         self.assertTrue(f.flashcards.filter_by(right_answered=True).count() == 10)
+
+    def test_from_json(self):
+        json_dict = {
+            'name': 'Testcollection',
+            'categories': [
+                {'name': 'Frist Cat'},
+                {'name': 'Sec Cat'}
+            ],
+            'flashcards': [
+                {'question': 'Is this Right?',
+                 'answer': 'Yes'},
+                {'question': 'Is this Wrong?',
+                 'answer': 'No'}
+            ]
+        }
+
+        coll = FlashcardCollection.from_json(json_collection=json_dict)
+        self.assertTrue(coll is not None)
+        self.assertTrue(coll.name == 'Testcollection')

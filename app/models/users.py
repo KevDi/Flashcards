@@ -1,8 +1,8 @@
 import hashlib
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
-from flask import current_app, request
-from flask_login import UserMixin
+from flask import current_app, request, url_for
+from flask_login import UserMixin, AnonymousUserMixin
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from .. import db, login_manager
 
@@ -84,6 +84,29 @@ class User(UserMixin, db.Model):
         db.session.add(self)
         return True
 
+    def to_json(self):
+        json_user = {
+            'url': url_for('api.get_user', id=self.id, _external=True),
+            'username': self.username,
+            'member_since': self.member_since,
+            'collections': url_for('api.get_collections', id=self.id, _external=True),
+            'collections_count': self.collections.count()
+        }
+        return json_user
+
+    def generate_auth_token(self, expiration):
+        s = Serializer(current_app.config['SECRET_KEY'], expires_in=expiration)
+        return s.dumps({'id': self.id}).decode('ascii')
+
+    @staticmethod
+    def verify_auth_token(token):
+        s = Serializer(current_app.config['SECRET_KEY'])
+        try:
+            data = s.loads(token)
+        except:
+            return None
+        return User.query.get(data['id'])
+
     def gravatar(self, size=100, default='identicon', rating='g'):
         if request.is_secure:
             url = 'https://secure.gravatar.com/avatar'
@@ -96,6 +119,13 @@ class User(UserMixin, db.Model):
 
     def __repr__(self):
         return '<User %r>' % self.username
+
+
+class AnonymousUser(AnonymousUserMixin):
+    pass
+
+
+login_manager.anonymous_user = AnonymousUser
 
 
 @login_manager.user_loader
