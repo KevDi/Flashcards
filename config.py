@@ -16,8 +16,8 @@ class Config:
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     FLASHCARD_MAIL_SUBJECT_PREFIX = '[Flashcard]'
-    FLASHCARD_MAIL_SENDER = '<insert Sender like:  Admin <admin@example.com>'
-    FLASHCARD_ADMIN = 'insert Admin Email'
+    FLASHCARD_MAIL_SENDER = os.environ.get('FLASHCARD_MAIL_SENDER')
+    FLASHCARD_ADMIN = os.environ.get('FLASHCARD_ADMIN')
 
 
     @staticmethod

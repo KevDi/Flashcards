@@ -78,7 +78,11 @@
     font-size: 0.875em;
 }
 
-.flashcardAmount {
+.thumbnail .delete {
+    text-align: right;
+}
+
+.margTop {
     margin-top: 10px;
 }
 

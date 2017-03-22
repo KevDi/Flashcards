@@ -9,7 +9,7 @@
             <span class="label label-primary">{{ category.name }}</span>
         {% endfor %}
         <br>
-        <div class="flashcardAmount">
+        <div class="margTop">
             <p class="label label-default">{{ flashcardcollection.flashcards.filter_by(wrong_answered=False, right_answered=False).count() }} Flashcards in
                 this Collection.</p>
             <p class="label label-danger">{{ flashcardcollection.flashcards.filter_by(wrong_answered=True).count() }} wrong

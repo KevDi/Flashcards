@@ -73,6 +73,16 @@ def flashcardcollection(id):
     return render_template('flashcardcollection.html', flashcardcollection=flashcardcollection)
 
 
+@main.route('/flashcardcollection/<int:id>/delete')
+@login_required
+def delete_flashcardcollection(id):
+    flashcardcollection = FlashcardCollection.query.get_or_404(id)
+    db.session.delete(flashcardcollection)
+    db.session.commit()
+    flash('Flashcardcollection {0} has been deleted'.format(flashcardcollection.name))
+    return redirect(request.referrer)
+
+
 @main.route('/flashcardcollection/<int:id>/add-flashcard', methods=['GET', 'POST'])
 @login_required
 def add_flashcard(id):

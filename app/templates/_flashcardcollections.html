@@ -14,6 +14,11 @@
                     </div>
                 </header>
                 <p class="flex-text">{{ collection.flashcards.count() }} Flashcards in this Collection</p>
+                <div class="delete">
+                    <a href="{{ url_for('.delete_flashcardcollection', id=collection.id) }}">
+                        <span class="label label-danger ">Delete</span>
+                    </a>
+                </div>
             </article>
         </div>
     {% endfor %}
